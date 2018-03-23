@@ -1,2 +1,12 @@
-build/libs/chromedriver.exe
-
+.gradle
+.idea
+.settings
+bin
+build
+gradle
+out
+.classpath
+.project
+gradlew*
+settings.gradle
+Testing.iml
