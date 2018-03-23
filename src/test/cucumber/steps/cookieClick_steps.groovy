@@ -25,7 +25,7 @@ Given(~/^I am on the Cookie Clicker website$/) { ->
 When(~/^I click on the cookie$/) { ->
     //There are better ways to wait than use thread sleep
     Thread.sleep(2000)
-    startingCookies = driver.findElement(By.id("cookies")).getText().tokenize(" ")[0].toInteger()
+    startingCookies = getCookies(driver)
     //println(startingCookies)
 
     def bigCookie = driver.findElement(By.id("bigCookie"))
@@ -34,9 +34,12 @@ When(~/^I click on the cookie$/) { ->
 
 Then(~/^The number of cookies I have should increase$/) { ->
     Thread.sleep(2000)
-    Integer cookiesBaked = driver.findElement(By.id("cookies")).getText().tokenize(" ")[0].toInteger()
+    Integer cookiesBaked = getCookies(driver)
     //println(cookiesBaked)
 
     assert(cookiesBaked > startingCookies)
 }
 
+def getCookies(WebDriver driver){
+    driver.findElement(By.id("cookies")).getText().tokenize(" ")[0].toInteger()
+}
