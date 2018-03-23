@@ -1,16 +1,24 @@
+import org.junit.Before
+import org.junit.internal.runners.statements.RunBefores
 import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.chrome.ChromeDriver
 
 import static cucumber.api.groovy.EN.*
+this.metaClass.mixin(cucumber.api.groovy.Hooks)
 
-//This could should be placed in a before hook
-System.setProperty("webdriver.chrome.driver","build/libs/chromedriver.exe")
-WebDriver driver = new ChromeDriver()
-
+//Must be shared variables. There might be a better way to do this?
+WebDriver driver
 Integer startingCookies
 
+Before() {
+    System.setProperty("webdriver.chrome.driver", "build/libs/chromedriver.exe")
+    driver = new ChromeDriver()
+}
 
+After(){
+    driver.close()
+}
 
 Given(~/^I am on the Cookie Clicker website$/) { ->
     driver.get("http://orteil.dashnet.org/cookieclicker/")
