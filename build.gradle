@@ -16,37 +16,34 @@ repositories {
     mavenCentral()
 }
 
+//Used for below code block
+configurations {
+	cucumberRuntime {
+		extendsFrom testRuntime
+	}
+}
+
+task cucumber() {
+	dependsOn testClasses
+	doLast {
+		javaexec {
+			main = "cucumber.api.cli.Main"
+			classpath = configurations.cucumberRuntime
+			args = [
+					'--plugin', 'pretty',
+					'--glue', 'src/test/cucumber/steps', 'src/test/cucumber'
+			]
+		}
+	}
+}
+
 dependencies {
 	testCompile group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '2.41.0'
 	compile group: 'org.seleniumhq.selenium', name: 'selenium-chrome-driver', version: '2.23.0'
 
-    
 	compile 'org.codehaus.groovy:groovy-all:2.4.5'
 	testCompile 'io.cucumber:cucumber-groovy:2.0.1'
 	testCompile 'io.cucumber:cucumber-junit:2.4.0'
 	testCompile 'junit:junit:4.12'
 }
 
-//Used for below code block
-configurations {
-    cucumberRuntime {
-        extendsFrom testRuntime
-    }
-}
-
-//Slightly modified boilerplate code (I'm not sure where I found it)
-//This code may be what is breaking the ability to use hooks, or it could be RunCukeTests.groovy
-task cucumber() {
-	dependsOn testClasses
-	doLast {
-		javaexec {
-			main = "cucumber.api.cli.Main"
-			classpath = configurations.cucumberRuntime + sourceSets.main.output + sourceSets.test.output
-			args = [
-				'--plugin', 'pretty',
-				'--tags', 'not @wip',
-				'--glue', 'src/test/groovy', 'src/test/cucumber'
-			]
-		}
-	}
-}
