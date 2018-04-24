@@ -17,7 +17,7 @@ task cucumber() {
 	doLast {
 		javaexec {
 			main = "cucumber.api.cli.Main"
-			classpath = configurations.cucumberRuntime
+			classpath = configurations.cucumberRuntime + sourceSets.main.output + sourceSets.test.output
 			args = [
 					'--plugin', 'pretty',
 					'--glue', 'src/test/cucumber/steps', 'src/test/cucumber'
